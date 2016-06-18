@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
+  <script>
+    $(document).ready(function(){
+
+        $("form").submit(function() {
+          event.preventDefault();
+          var formData = new FormData($(this)[0]);
+
+          $.ajax({
+          url: $(this).attr("action"),
+          type: 'POST',
+          data: formData,
+          async: true,
+          success: function (data) {
+              console.log(data);
+              $("h5").text("Your file: "+data.filename + " size is " + data.filesize);
+          },
+          cache: false,
+          contentType: false,
+          processData: false
+          });
+
+          return false;
+        });
+    })
+  </script>
+</head>
+
+<body>
+
+<h1>File meta data. </h1>
+<h3>Uplaod a file and you will know its size.</h3>
+<form action="/api/fileanalyse" method="POST" enctype="multipart/form-data">
+    <input type="file" name="f" />
+    <input type="submit"/>
+</form>
+<h5></h5>
+</body>
+</html>
